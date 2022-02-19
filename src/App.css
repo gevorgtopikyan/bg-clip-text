@@ -1,0 +1,39 @@
+.input-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-form label {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-div {
+  width: 300px;
+  height: 300px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  font-size: 6em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.revert-text-color {
+  -webkit-text-fill-color: initial;
+}
