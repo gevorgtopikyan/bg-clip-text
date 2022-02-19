@@ -11,11 +11,10 @@
 .preview-div {
   width: 300px;
   height: 300px;
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
   font-size: 6em;
   font-weight: bold;
   line-height: 1;
+  -webkit-background-clip: text;
 }
 
 .d-flex {

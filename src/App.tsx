@@ -27,6 +27,8 @@ function BgCreator({ onCssChange }: CreatorProps) {
 
   const [bgUrl, setBgUrl] = useState('');
 
+  const [overlayValue, setOverlayValue] = useState('');
+
   const [opacity, setOpacity] = useState(100);
 
   const [positionX, setPositionX] = useState(0);
@@ -45,14 +47,34 @@ function BgCreator({ onCssChange }: CreatorProps) {
 
   useEffect(() => {
     const url = bgUrl || selectedFileUrl;
+    const overlay =
+      overlayValue.indexOf('gradient') > -1
+        ? overlayValue
+        : overlayValue
+        ? `linear-gradient(${overlayValue}, ${overlayValue})`
+        : '';
+    let bgImage = `url(${url})`;
+    if (overlay) {
+      bgImage = `${overlay},${bgImage}`;
+    }
     const css = {
-      backgroundImage: `url(${url})`,
+      backgroundImage: bgImage,
       opacity: opacity / 100,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: `${positionX}% ${positionY}%`,
+      WebkitTextFillColor: 'transparent',
+      WebkitBackgroundClip: 'text',
     };
     onCssChange?.(css);
-  }, [onCssChange, opacity, selectedFileUrl, bgUrl, positionX, positionY]);
+  }, [
+    onCssChange,
+    opacity,
+    overlayValue,
+    selectedFileUrl,
+    bgUrl,
+    positionX,
+    positionY,
+  ]);
 
   return (
     <form className="input-form">
@@ -70,6 +92,16 @@ function BgCreator({ onCssChange }: CreatorProps) {
           type="text"
           value={bgUrl}
           onChange={(e) => setBgUrl(e.target.value)}
+        />
+      </label>
+      <label>
+        Overlay color (overlay will be displayed between bg image and text)
+        (include opacity in the text, like rgba(0,0,0,0.25)) (or paste full
+        gradient code for custom gradients)
+        <input
+          type="text"
+          value={overlayValue}
+          onChange={(e) => setOverlayValue(e.target.value)}
         />
       </label>
       <label>
@@ -110,9 +142,16 @@ function BgCreator({ onCssChange }: CreatorProps) {
 
 function Preview({ css }: { css: Record<string, any> }) {
   return (
-    <div className="preview-div" style={css}>
-      <TextEditor />
-    </div>
+    <>
+      <div className="preview-div" style={css}>
+        <TextEditor />
+      </div>
+      <pre>
+        {Object.entries(css).map(
+          ([key, value]) => `${key}: ${value.toString().slice(0, 100)};\n`
+        )}
+      </pre>
+    </>
   );
 }
 
